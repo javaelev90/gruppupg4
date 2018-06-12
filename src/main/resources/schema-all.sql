@@ -1,3 +1,5 @@
+CREATE SCHEMA cinematest;
+
 CREATE TABLE "customer" (
 "id" serial PRIMARY key not null,
 "name" varchar(30)

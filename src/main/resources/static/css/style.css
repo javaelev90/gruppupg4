@@ -1,3 +1,5 @@
+
+
 .header {
     display: flex;
     align-items: center;
@@ -8,7 +10,7 @@
 }
 
 body {
-	background-image: url("img/background.jpg");
+	background-image: url("/resources/img/background.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
 	background-position: relative;
@@ -36,6 +38,55 @@ body {
     border-radius: 15px;
     overflow: hidden;
     background-color: #000000c4;
+}
+
+.booking-row{
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	justify-content: center;
+}
+
+.booking-col{
+	display: flex;
+	flex-direction: column;
+}
+
+.booking-col:last-child {
+	margin-left: 20px;
+}
+
+input[type="checkbox"]{
+    -webkit-appearance: initial;
+    appearance: initial;
+    background: gray;
+    width: 25px;
+	height: 18px;
+	margin: 10px 5px;
+    border-radius:0 0 .125em .125em;
+    background: gray;
+    position: relative;
+}
+
+input[type="checkbox"]:checked {
+    background: red;
+}
+
+input[type="checkbox"]:checked:after {
+	
+	content: "";
+	color: red;
+}
+
+.seat:hover{
+	background-color: white;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
 }
 
 .nav li {
@@ -100,7 +151,7 @@ body {
     justify-content: center;
 }
 
-button[type=button] {
+button[type=submit] {
     padding: 25px 40px;
     background:#2b2828;
     border: none;
@@ -110,13 +161,14 @@ button[type=button] {
     color: white;
 }
 
-button[type=button]:hover {
+button[type=submit]:hover {
     background: #4d4d4d;
 }
 
 form[type=seats] {
     display: flex;
     flex-direction: row;
+    margin-bottom: 5px;
 }
 
 input[type=seats] {
@@ -133,11 +185,16 @@ input[type=seats]:focus {
     border-radius: 5px;
 }
 
+input[type=text]:first-child {
+	margin-top: 8px;
+}
+
 input[type=text] {
     padding: 5px;
     border: 2px solid black;
     background: #2b2828;
     border-radius: 5px;
+    color: white;
 }
 
 input[type=text]:focus {
