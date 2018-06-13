@@ -12,22 +12,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script  src="http://code.jquery.com/jquery-1.9.1.min.js" ></script>     
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script>
-
 	var seats = [];
-	
-	function clickSeat(row, col){
-		seats.push([row, col]);
+
+	function clickSeat(row, col) {
+		seats.push([ row, col ]);
 		$("#seats").val(seats);
 		console.log(seats);
 	}
-	
-    $(document).ready(function(){
-        $("input.seat").click(function(){
-        	clickSeat(parseInt($(this).parent().index())+1,parseInt( $(this).index())+1);
-        });    
-    });
+
+	$(document).ready(
+			function() {
+				$("input.seat").click(
+						function() {
+							clickSeat(parseInt($(this).parent().index()) + 1,
+									parseInt($(this).index()) + 1);
+						});
+			});
 </script>
 </head>
 <body>
@@ -56,31 +58,36 @@
 						that war is sent to protect her at all costs.</div>
 					<br />
 					<div class="label">Boka biljett</div>
-					<form:form mehtod="post" action="/booking">
+
 					<div class="booking-row">
-					<input id="seats" name="seats" type="hidden">
+
 						<div class="booking-col">
 							---------Bioduk---------
 							<c:forEach var="i" begin="1" end="5">
 								<div class="row">
 									<c:forEach var="j" begin="1" end="5">
-										<input type="checkbox" class="seat" name="bookedSeats"/>
+										<input type="checkbox" class="seat" name="bookedSeats" />
 									</c:forEach>
 								</div>
 							</c:forEach>
 
 						</div>
 						<div class="booking-col">
-								Kund information
-								<input type="text" placeholder="Förnamn"><br />
-								<input type="text" placeholder="Efternamn"><br />
-								<input type="text" placeholder="E-post"><br />
+							Kund information
+							<form:form mehtod="post" action="/booking">
+								<input id="seats" name="seats" type="hidden">
+								<input type="text" placeholder="Förnamn">
+								<br />
+								<input type="text" placeholder="Efternamn">
+								<br />
+								<input type="text" placeholder="E-post">
+								<br />
 								<input type="submit" value="Submit">
-							
+							</form:form>
 						</div>
-						
+
 					</div>
-				</form:form>
+
 				</div>
 			</div>
 		</div>

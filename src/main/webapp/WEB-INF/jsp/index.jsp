@@ -45,7 +45,7 @@
 				<div class="text">${show.start} - ${show.end}</div>
 			</div>
 			<div class="book">
-				<form:form type="seats" method="get" action="/booking" id="booking-form">
+				<form:form type="seats" method="get" action="/booking/${show.id}" id="booking-form">
 					Antal platser<input type="seats" name="seats">
 				</form:form>
 				<button form="booking-form" type="submit">Boka</button>

@@ -1,20 +1,26 @@
 package se.javakurs.gruppupg4.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import se.javakurs.gruppupg4.entities.Theatre;
 
 @Controller
 @RequestMapping("/booking")
 public class BookingController {
 
-	@GetMapping("")
-	public String getBookingPage(@RequestParam("seats") Integer seats) {
+	@GetMapping("/{id}")
+	public String getBookingPage(@PathVariable("id") Integer showId, @RequestParam("seats") Integer seats) {
 		System.out.println("heheheh");
+	
+		
 		return "booking";
 	}
 	
