@@ -48,15 +48,15 @@
 		<div class="main">
 			<div class="movie">
 				<div class="poster">
-					<img src="/resources/img/terminator.jpg" />
+					<img src="/resources/img/${movie.name}.jpg" />
 				</div>
 				<div class="labelText">
-					<div class="label">The Terminator</div>
-					<div class="text">A seemingly indestructible android is sent
-						from 2029 to 1984 to assassinate a waitress, whose unborn son will
-						lead humanity in a war against the machines, while a soldier from
-						that war is sent to protect her at all costs.</div>
+					<div class="label">${movie.name}</div>
+					<div class="text">${movie.description}</div>
 					<br />
+					<div class="text">${show.start}- ${show.end}</div>
+					<br />
+
 					<div class="label">Boka biljett</div>
 
 					<div class="booking-row">
@@ -66,7 +66,14 @@
 							<c:forEach var="i" begin="1" end="5">
 								<div class="row">
 									<c:forEach var="j" begin="1" end="5">
-										<input type="checkbox" class="seat" name="bookedSeats" />
+<%-- 										<c:choose> --%>
+<%-- 											<c:when test="${}"> --%>
+<!--  												<input disabled type="checkbox" class="seat" name="bookedSeats" /> -->
+<%-- 											</c:when> --%>
+<%-- 											<c:otherwise> --%>
+<!--         										<input type="checkbox" class="seat" name="bookedSeats" /> -->
+<%-- 											</c:otherwise> --%>
+<%-- 										</c:choose> --%>
 									</c:forEach>
 								</div>
 							</c:forEach>
