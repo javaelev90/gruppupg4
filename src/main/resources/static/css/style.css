@@ -61,7 +61,6 @@ body {
 input[type="checkbox"]{
     -webkit-appearance: initial;
     appearance: initial;
-    background: gray;
     width: 25px;
 	height: 18px;
 	margin: 10px 5px;
@@ -69,7 +68,16 @@ input[type="checkbox"]{
     background: gray;
     position: relative;
 }
-
+input#seatsTogheter {
+	
+	background: #ff0080 !important;
+    width: 50px;
+	height: 40px;
+	margin: 10px 5px;
+    border-radius:0 0 .125em .125em;
+    position: relative;
+    
+}
 input[type="checkbox"]:checked {
     background: white;
 }
@@ -247,19 +255,7 @@ input[type=submit]:hover {
 }
 
 
-.home5 {
-    float: right;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: auto;
-    padding-right: 10%;
-    text-decoration: none;
-}
 
-.home5 a {
-    background-color: rgb(184, 12, 103);
-}
 
 .overlay {
     position: fixed;
@@ -267,39 +263,44 @@ input[type=submit]:hover {
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
     transition: opacity 500ms;
     visibility: hidden;
     opacity: 0;
+
   }
 
   .overlay:target {
     visibility: visible;
     opacity: 1;
+
   }
   .popup {
     margin: 70px auto;
     padding: 20px;
-    background: #fff;
     border-radius: 5px;
+    color: black !important;
     width: 20%;
     position: relative;
     transition: all 2s ease-in-out;
+    background-color: rgb(184, 12, 103);
   }
   .popup .close {
     position: absolute;
     top: 20px;
     right: 30px;
-    transition: all 200ms;
+
     font-size: 30px;
     font-weight: bold;
     text-decoration: none;
+
     color: #333;
   }
 
   .popup .content {
     max-height: 30%;
     overflow: auto;
+
+
 
   }
 

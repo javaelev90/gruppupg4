@@ -22,9 +22,9 @@
 	<div class="container">
 		<div class="nav">
 			<ul>
-				<li><a href="/">Hemsida</a></li>
+				<li><a href="/">All theatres</a></li>
 				<c:forEach items="${theatres}" var="theatre">
-					<li><a href="/salong/${theatre.name}">${theatre.name}</a></li>
+					<li><a href="/theatre/${theatre.id}">${theatre.name}</a></li>
 				</c:forEach>
 
 
@@ -33,7 +33,7 @@
 				<div id="popup1" class="overlay">
 					<div class="popup">
 						<h2>Add Show</h2>
-						<a class="close" href="#">&times;</a>
+						<a class="close" href="">&times;</a>
 						<div class="content">
 							<div>
 								<form:form mehtod="post" action="/">
@@ -89,12 +89,11 @@
 					<div class="book">
 						<form:form type="seats" method="get" action="/booking/${show.id}"
 							id="booking-form${show.id}">
-					Antal platser<input type="seats" name="seats">
 						</form:form>
-						<button form="booking-form${show.id}" type="submit">Boka</button>
-						<div class="text">Lediga platser:
-							${availableSeats[status.index]}</div>
-						<div class="text">Pris: 120kr</div>
+						<button form="booking-form${show.id}" type="submit">Book</button>
+						<div class="text">Available seats:
+							${(theatres[0].getSEAT_ROWS() * theatres[0].getSEAT_COLS())-seatsTaken[status.index]}/${theatres[0].getSEAT_ROWS() * theatres[0].getSEAT_COLS()}</div>
+						<div class="text">Price: 120kr</div>
 					</div>
 				</div>
 			</c:forEach>

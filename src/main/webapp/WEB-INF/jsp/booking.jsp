@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -15,19 +16,52 @@
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script>
 	var seats = [];
+	var seatsTogheter;
+	var numberOfSeats = parseInt($('#numberOfSeats').text());
+	
+	function increase() {
+
+	  var el = parseInt($('#numberOfSeats').text());
+	  $('#numberOfSeats').text(el+1);
+	  numberOfSeats =el+1;
+	}
+	
+	function decrease() {
+		
+	 var el = parseInt($('#numberOfSeats').text());
+	 if(el > 1){
+	  $('#numberOfSeats').text(el-1); 
+	  numberOfSeats =el-1;
+	 }
+
+	}
 
 	function clickSeat(row, col) {
-		seats.push([ row, col ]);
-		$("#seats").val(seats);
-		console.log(seats);
+		seatsTogheter = $('#seatsTogheter:checked').val();
+		if(seatsTogheter){
+			var seatArr = [];
+			var nextCol;
+			var nextRow;
+			//Creates indexes for seats to select
+			for(var i = 0; i < numberOfSeats; i++){
+				nextCol = col+i;
+				seatArr.push(row+""+nextCol);
+			}
+			$("#seatList").find('[value=' + seatArr.join('], [value=') + ']').prop("checked", true);
+		} else {
+			seats.push([ row, col ]);
+			$("#seats").val(seats);
+			console.log(seats);
+		}
+		
 	}
 
 	$(document).ready(
 			function() {
 				$("input.seat").click(
 						function() {
-							clickSeat(parseInt($(this).parent().index()) + 1,
-									parseInt($(this).index()) + 1);
+							clickSeat(parseInt($(this).parent().index()),
+									parseInt($(this).index()));
 						});
 			});
 </script>
@@ -39,9 +73,9 @@
 	<div class="container">
 		<div class="nav">
 			<ul>
-				<li><a href="/">Hemsida</a></li>
+				<li><a href="/">All theatres</a></li>
 				<c:forEach items="${theatres}" var="theatre">
-					<li><a href="/salong/${theatre.name}">${theatre.name}</a></li>
+					<li><a href="/theatre/${theatre.id}">${theatre.name}</a></li>
 				</c:forEach>
 			</ul>
 		</div>
@@ -54,40 +88,51 @@
 					<div class="label">${movie.name}</div>
 					<div class="text">${movie.description}</div>
 					<br />
-					<div class="text">${show.start}- ${show.end}</div>
+					<div class="text">${show.start}-${show.end}</div>
 					<br />
 
-					<div class="label">Boka biljett</div>
+					<div class="label">Book ticket</div>
 
 					<div class="booking-row">
-
 						<div class="booking-col">
-							---------Bioduk---------
-							<c:forEach var="i" begin="1" end="5">
-								<div class="row">
-									<c:forEach var="j" begin="1" end="5">
-<%-- 										<c:choose> --%>
-<%-- 											<c:when test="${}"> --%>
-<!--  												<input disabled type="checkbox" class="seat" name="bookedSeats" /> -->
-<%-- 											</c:when> --%>
-<%-- 											<c:otherwise> --%>
-<!--         										<input type="checkbox" class="seat" name="bookedSeats" /> -->
-<%-- 											</c:otherwise> --%>
-<%-- 										</c:choose> --%>
-									</c:forEach>
-								</div>
-							</c:forEach>
-
+							Seats togheter: <input type="checkbox" id="seatsTogheter" />
+							<button class="modifyNumSeats" onclick="increase()">+</button>
+							<div id="numberOfSeats">1</div>
+							<button class="modifyNumSeats" onclick="decrease()">-</button>
 						</div>
 						<div class="booking-col">
-							Kund information
-							<form:form mehtod="post" action="/booking">
+							<div id="seatList">
+								---------Cinema screen---------
+								<c:forEach var="i" begin="0"
+									end="${theatres[0].getSEAT_ROWS()-1}">
+									<div class="row">
+										<c:forEach var="j" begin="0"
+											end="${theatres[0].getSEAT_COLS()-1}">
+											<c:set var="key" value="row${i}col${j}" />
+											<c:choose>
+												<c:when test="${not empty tickets[key]}">
+													<input disabled type="checkbox" class="seat"
+														value="${i}${j}" />
+												</c:when>
+												<c:otherwise>
+													<input type="checkbox" class="seat" name="bookedSeats"
+														value="${i}${j}" />
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</div>
+								</c:forEach>
+							</div>
+						</div>
+						<div class="booking-col">
+							Customer information
+							<form:form mehtod="post" action="/booking/${show.id}">
 								<input id="seats" name="seats" type="hidden">
-								<input type="text" placeholder="Förnamn">
+								<input type="text" placeholder="First name">
 								<br />
-								<input type="text" placeholder="Efternamn">
+								<input type="text" placeholder="Last name">
 								<br />
-								<input type="text" placeholder="E-post">
+								<input type="text" placeholder="E-mail">
 								<br />
 								<input type="submit" value="Submit">
 							</form:form>

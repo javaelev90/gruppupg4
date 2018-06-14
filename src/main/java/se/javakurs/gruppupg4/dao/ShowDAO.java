@@ -26,6 +26,12 @@ public class ShowDAO {
 		
 	}
 	
+	public List<Show> findAllShowsForTheatre(int theatreId) {
+		String selectShow = "SELECT * FROM cinematronic.show WHERE theatre_id = ?;";
+		return jdbcTemplate.query(selectShow, new Integer[] {theatreId}, new ShowRowMapper());
+		
+	}
+	
 	public int create(Show show) {
 		 
 		jdbcTemplate.update("INSERT INTO cinematronic.show (movie_id, theatre_id, starttime, endtime) VALUES (?,?,?,?);"
