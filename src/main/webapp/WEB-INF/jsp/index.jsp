@@ -13,7 +13,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
 </head>
 <body>
 	<div class="header">
@@ -28,53 +27,51 @@
 				</c:forEach>
 
 
-				<li><a href="#popup1">Add Show</a></li>
+				<li id="showPopup"><a href="#popup1">Add Show</a></li>
+			</ul>	
+			<div id="popup1" class="overlay">
+				<div class="popup">
+					<h2>Add Show</h2>
+					<a class="close" href="">&times;</a>
+					<div class="content">
+						<div>
+							<form:form mehtod="post" action="/">
+								
+								<select name="movie">
+								<c:forEach items="${movies}" var="movie">
+								<option value="${movie.key}">${movie.value.name}</option>
+								
+								</c:forEach>
 
-				<div id="popup1" class="overlay">
-					<div class="popup">
-						<h2>Add Show</h2>
-						<a class="close" href="">&times;</a>
-						<div class="content">
-							<div>
-								<form:form mehtod="post" action="/">
+								</select>
+								
+								<br />
 
-									<select name="movie">
-									<c:forEach items="${movies}" var="movie">
-									<option value="${movie.key}">${movie.value.name}</option>
-									
-									</c:forEach>
-	
-									</select>
-									
-									<br />
+								<select name="theatre">
+								<c:forEach items="${theatres}" var="theatre">
+								<option value="${theatre.id}">${theatre.name}</option>
+								
+								</c:forEach>
 
-									<select name="theatre">
-									<c:forEach items="${theatres}" var="theatre">
-									<option value="${theatre.id}">${theatre.name}</option>
-									
-									</c:forEach>
-	
-									</select>
+								</select>
 
-									<br />
-									<input type="datetime-local" placeholder="Start date" name="starttime">
-									<br />
-									<input type="datetime-local" placeholder="End date" name="endtime">
-									<br />
-									<input type="submit" value="Submit">
-								</form:form>
-							</div>
+								<br />
+								<input type="datetime-local" placeholder="Start date" name="starttime" required>
+								<br />
+								<input type="datetime-local" placeholder="End date" name="endtime" required>
+								<br />
+								<input type="submit" value="Submit">
+							</form:form>
+							<c:if test="${param.success == false}">
+								<p style="color: white; font-size: 14pt;">Could not add show</p>
+							</c:if>
 						</div>
 					</div>
 				</div>
-
-
-
-
-
-			</ul>
+			</div>
 		</div>
 		<div class="main">
+		
 			<c:forEach items="${shows}" var="show" varStatus="status">
 				<div class="movie">
 					<div class="poster">

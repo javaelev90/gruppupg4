@@ -61,7 +61,7 @@ public class Show {
 	public boolean checkOverlap(LocalDateTime startTime, LocalDateTime endTime) {
 		return (start.isBefore(endTime) && startTime.isBefore(end));
 	}
-	
+
 	@Override
 	public String toString() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm");

@@ -39,6 +39,15 @@ body {
     overflow: hidden;
     background-color: #000000c4;
 }
+#showPopup{
+	border-radius: 10px;
+	background-color: darkred !important;
+}
+
+#showPopup a:hover {
+
+	background-color: red !important;
+}
 
 .booking-row{
 	margin: 0;
@@ -52,10 +61,7 @@ body {
 .booking-col{
 	display: flex;
 	flex-direction: column;
-}
-
-.booking-col:last-child {
-	margin-left: 20px;
+	margin: 0 10px;
 }
 
 input[type="checkbox"]{
@@ -67,17 +73,42 @@ input[type="checkbox"]{
     border-radius:0 0 .125em .125em;
     background: gray;
     position: relative;
+    cursor: pointer;
 }
-input#seatsTogheter {
-	
-	background: #ff0080 !important;
-    width: 50px;
-	height: 40px;
+#seatsTogheter {
+	-webkit-appearance: checkbox;
+/* 	background: #ff0080 !important; */
+    width: 25px;
+	height: 20px;
 	margin: 10px 5px;
-    border-radius:0 0 .125em .125em;
+    border-radius:0 !important;
     position: relative;
+    cursor: pointer;
     
 }
+
+.modifyNumSeats {
+	width: 40px;
+	height: 40px;
+	margin: 5px auto;
+	border-radius: 20px;
+	background-color: red;
+	font-size: 20pt;
+	font-style: bold;
+	color:white;
+}
+
+.checkSeatsTogether {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	font-size: 11pt;
+}
+/* input#seatsTogheter:checked:after { */
+/* 	content: ""; */
+/* } */
+
 input[type="checkbox"]:checked {
     background: white;
 }
@@ -267,42 +298,40 @@ input[type=submit]:hover {
     visibility: hidden;
     opacity: 0;
 
-  }
+}
 
-  .overlay:target {
-    visibility: visible;
-    opacity: 1;
+.overlay:target {
+	visibility: visible;
+	opacity: 1;
 
-  }
-  .popup {
-    margin: 70px auto;
-    padding: 20px;
-    border-radius: 5px;
-    color: black !important;
-    width: 20%;
-    position: relative;
-    transition: all 2s ease-in-out;
-    background-color: rgb(184, 12, 103);
-  }
-  .popup .close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
+}
+.popup {
+	margin: 70px auto;
+	padding: 20px;
+	border-radius: 5px;
+	color: black !important;
+	width: 20%;
+	position: relative;
+	transition: all 2s ease-in-out;
+	background-color: darkred;
+}
+.popup .close {
+	position: absolute;
+	top: 20px;
+	right: 30px;
+	
+	font-size: 30px;
+	font-weight: bold;
+	text-decoration: none;
+	
+	color: #333;
+}
 
-    font-size: 30px;
-    font-weight: bold;
-    text-decoration: none;
+.popup .content {
+	max-height: 30%;
+	overflow: auto;
 
-    color: #333;
-  }
-
-  .popup .content {
-    max-height: 30%;
-    overflow: auto;
-
-
-
-  }
+}
 
 
 

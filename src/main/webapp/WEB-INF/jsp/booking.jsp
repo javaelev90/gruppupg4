@@ -17,8 +17,8 @@
 <script>
 	var seats = [];
 	var seatsTogheter;
-	var numberOfSeats = parseInt($('#numberOfSeats').text());
-	
+	var numberOfSeats;
+	var seatArr = [];
 	function increase() {
 
 	  var el = parseInt($('#numberOfSeats').text());
@@ -38,31 +38,79 @@
 
 	function clickSeat(row, col) {
 		seatsTogheter = $('#seatsTogheter:checked').val();
+		
 		if(seatsTogheter){
-			var seatArr = [];
-			var nextCol;
-			var nextRow;
-			//Creates indexes for seats to select
-			for(var i = 0; i < numberOfSeats; i++){
-				nextCol = col+i;
-				seatArr.push(row+""+nextCol);
+			
+			
+			seats = [];
+			$("#seats").val(seats);
+
+			$("#seatList").find("input").prop("checked", false);
+			//Check if number of seats are within bounds
+			if(($('.row').first().children().length >= (col+numberOfSeats))){
+				
+					
+				
+				$("#seatList").find('[value=' + seatArr.join('], [value=') + ']').prop("checked", false);
+				var nextCol;
+				var nextRow;
+				seatArr = [];
+				seats = [];
+				//Creates indexes for seats to select
+				for(var i = 0; i < numberOfSeats; i++){
+					nextCol = col+i;
+					seatArr.push(row+""+nextCol);
+					seats.push([row, nextCol]);
+				}
+				var seatsSelected = $("#seatList").find('[value=' + seatArr.join('], [value=') + ']');
+
+				var disabled = $(seatsSelected).filter(function( index ) {
+						    return $( this ).attr( "id" ) === "disabled";
+							}).length;
+				
+				if(disabled === 0){
+					$("#seats").val(seats);
+					$("#seatList").find('[value=' + seatArr.join('], [value=') + ']').prop("checked", true);
+				}
+
+
 			}
-			$("#seatList").find('[value=' + seatArr.join('], [value=') + ']').prop("checked", true);
 		} else {
 			seats.push([ row, col ]);
 			$("#seats").val(seats);
-			console.log(seats);
 		}
 		
 	}
 
+	function resetBooking(){
+		$("#seatList").find("[type=checkbox]").prop("checked", false);
+		seats = [];
+	}
+	
+	function canMakeBooking(){
+		if(seats.length === 0){
+			alert("Can't book 0 seats");
+			return;
+		}
+		
+		document.getElementById("submitForm").submit();
+	}
+	
+
+	
 	$(document).ready(
+			
 			function() {
 				$("input.seat").click(
 						function() {
 							clickSeat(parseInt($(this).parent().index()),
 									parseInt($(this).index()));
 						});
+				
+				$('#seatsTogheter').click(function(){
+					resetBooking();
+				});		
+				numberOfSeats = parseInt($('#numberOfSeats').text());
 			});
 </script>
 </head>
@@ -95,7 +143,7 @@
 
 					<div class="booking-row">
 						<div class="booking-col">
-							Seats togheter: <input type="checkbox" id="seatsTogheter" />
+							<div class="checkSeatsTogether"> <input type="checkbox" id="seatsTogheter" />Seats together</div>
 							<button class="modifyNumSeats" onclick="increase()">+</button>
 							<div id="numberOfSeats">1</div>
 							<button class="modifyNumSeats" onclick="decrease()">-</button>
@@ -111,7 +159,7 @@
 											<c:set var="key" value="row${i}col${j}" />
 											<c:choose>
 												<c:when test="${not empty tickets[key]}">
-													<input disabled type="checkbox" class="seat"
+													<input disabled id="disabled" type="checkbox" class="seat"
 														value="${i}${j}" />
 												</c:when>
 												<c:otherwise>
@@ -126,7 +174,7 @@
 						</div>
 						<div class="booking-col">
 							Customer information
-							<form:form mehtod="post" action="/booking/${show.id}">
+							<form:form mehtod="post" id="submitForm" action="/booking/${show.id}">
 								<input id="seats" name="seats" type="hidden">
 								<input type="text" placeholder="First name">
 								<br />
@@ -134,7 +182,8 @@
 								<br />
 								<input type="text" placeholder="E-mail">
 								<br />
-								<input type="submit" value="Submit">
+
+								<button type="button" onclick="canMakeBooking()">Submit</button>
 							</form:form>
 						</div>
 

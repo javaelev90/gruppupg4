@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import se.javakurs.gruppupg4.dao.BookingDAO;
 import se.javakurs.gruppupg4.dao.MovieDAO;
@@ -71,34 +72,38 @@ public class HomePageController {
 	}
 	
 	@PostMapping("/")
-	public String postShow (@RequestParam("movie") Integer movieId, @RequestParam("theatre") Integer theatreId,
-			@RequestParam("starttime") String starttime, @RequestParam("endtime") String endtime) {
-	
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"); 
+	public ModelAndView postShow (@RequestParam("movie") Integer movieId, @RequestParam("theatre") Integer theatreId,
+			@RequestParam("starttime") String starttime, @RequestParam("endtime") String endtime, Model model) {
 		
 		Show show = new Show();
 		
 		show.setMovieId(movieId);
 		show.setTheatreId(theatreId);
-		show.setStart(LocalDateTime.parse(LocalDateTime.parse(starttime).format(formatter), formatter));
-		show.setEnd(LocalDateTime.parse(LocalDateTime.parse(endtime).format(formatter), formatter));
+		show.setStart(LocalDateTime.parse(starttime));
+		show.setEnd(LocalDateTime.parse(endtime));
 		
-		if(!isShowOverlapping(show)) {
+		
+		if(!isShowOverlapping(show, theatreId)) {
 			showDAO.create(show);
-		}
-	
-		return "redirect:/";
-		
-		
+			return new ModelAndView("redirect:/");
+		} else {
+			ModelAndView modelNView = new ModelAndView("redirect:/#popup1");
+			modelNView.addObject("success", false);
+			return modelNView;
+		}	
 	}
 	
-	private boolean isShowOverlapping(Show checkShow) {
+	private boolean isShowOverlapping(Show checkShow, Integer theatreId) {
 		
-		List<Show> shows = showDAO.findAllShows();
+		List<Show> shows = showDAO.findAllShowsForTheatre(theatreId);
 		for(Show show : shows) {
-			if((checkShow.getStart().isBefore(show.getEnd()) && show.getStart().isBefore(checkShow.getEnd()))) {
+
+			if(checkShow.checkOverlap(show.getStart(), show.getEnd())) {
 				return true;
 			}
+		}
+		if(!checkShow.getStart().isBefore(checkShow.getEnd())) {
+			return true;
 		}
 		return false;
 		
