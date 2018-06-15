@@ -62,6 +62,8 @@ body {
 	display: flex;
 	flex-direction: column;
 	margin: 0 10px;
+	align-items: center;
+	justify-content: center;
 }
 
 input[type="checkbox"]{
@@ -92,9 +94,19 @@ input[type="checkbox"]{
 	height: 40px;
 	margin: 5px auto;
 	border-radius: 20px;
-	background-color: red;
+	background-color: darkred;
 	font-size: 20pt;
 	font-style: bold;
+	color:white;
+}
+
+#submitButton {
+	width: fit-content;
+	height: auto;
+	margin: 5px auto;
+	border-radius: 5px;
+	background-color: darkred;
+	font-size: 14pt;
 	color:white;
 }
 

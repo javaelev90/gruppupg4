@@ -173,17 +173,17 @@
 							</div>
 						</div>
 						<div class="booking-col">
-							Customer information
+<!-- 							Customer information -->
 							<form:form mehtod="post" id="submitForm" action="/booking/${show.id}">
 								<input id="seats" name="seats" type="hidden">
-								<input type="text" placeholder="First name">
-								<br />
-								<input type="text" placeholder="Last name">
-								<br />
-								<input type="text" placeholder="E-mail">
-								<br />
+<!-- 								<input type="text" placeholder="First name"> -->
+<!-- 								<br /> -->
+<!-- 								<input type="text" placeholder="Last name"> -->
+<!-- 								<br /> -->
+<!-- 								<input type="text" placeholder="E-mail"> -->
+<!-- 								<br /> -->
 
-								<button type="button" onclick="canMakeBooking()">Submit</button>
+								<button id="submitButton" type="button" onclick="canMakeBooking()">Submit</button>
 							</form:form>
 						</div>
 
