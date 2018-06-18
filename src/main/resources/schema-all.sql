@@ -39,3 +39,9 @@ CREATE TABLE "ticket" (
 "row" int,
 "colum" int
 );
+
+insert into cinematronic.movie(name, description) values ('terminator', 'A seemingly indestructible android is sent from 2029 to 1984 to assassinate a waitress, whose unborn son will lead humanity in a war against the machines, while a soldier from that war is sent to protect her at all costs.');
+insert into cinematronic.movie(name, description) values ('scarface', 'In Miami in 1980, a determined Cuban immigrant takes over a drug cartel and succumbs to greed.');
+insert into cinematronic.customer(name) values ('admin');
+insert into cinematronic.theatre(name) values ('Blå hallen');
+insert into cinematronic.theatre(name) values ('Röd hallen');
