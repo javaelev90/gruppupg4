@@ -8,12 +8,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import se.javakurs.gruppupg4.dao.BookingDAO;
@@ -25,8 +31,9 @@ import se.javakurs.gruppupg4.entities.Booking;
 import se.javakurs.gruppupg4.entities.Movie;
 import se.javakurs.gruppupg4.entities.Show;
 import se.javakurs.gruppupg4.entities.Theatre;
+import se.javakurs.gruppupg4.entities.wrappers.TheatrepageWrapper;
 
-@Controller
+@RestController
 @RequestMapping("")
 public class HomePageController {
 	
@@ -42,18 +49,22 @@ public class HomePageController {
 	private TicketDAO ticketDAO;
 	
 	@GetMapping("/")
-	public String getHomePage(Model model) {
-
+	@ResponseBody
+	public ResponseEntity<TheatrepageWrapper> getHomePage() {
+		TheatrepageWrapper theatrepageWrapper = new TheatrepageWrapper();
 		List<Theatre> theatres = theatreDAO.findAllTheatres();
-		model.addAttribute("theatres", theatres);
+//		model.addAttribute("theatres", theatres);
+		theatrepageWrapper.setTheatres(theatres);
 		
 		List<Show> shows = showDAO.findAllShows();
-		model.addAttribute("shows", shows);
+//		model.addAttribute("shows", shows);
+		theatrepageWrapper.setShows(shows);
 		
 		List<Movie> movies = movieDAO.findAllMovies();
 		Map<Integer, Movie> movieMap = new HashMap<>();
 		movies.forEach(movie -> movieMap.put(movie.getId(), movie));
-		model.addAttribute("movies", movieMap);
+//		model.addAttribute("movies", movieMap);
+		theatrepageWrapper.setMovieMap(movieMap);
 		
 		List<Integer> totalSeatsTaken = new ArrayList<>();
 		for(Show show : shows) {
@@ -67,29 +78,20 @@ public class HomePageController {
 		}
 		
 
-		model.addAttribute("seatsTaken", totalSeatsTaken);
-		return "index";
+//		model.addAttribute("seatsTaken", totalSeatsTaken);
+		theatrepageWrapper.setTotalSeatsTaken(totalSeatsTaken);
+		return new ResponseEntity<>(theatrepageWrapper, HttpStatus.OK);
 	}
 	
 	@PostMapping("/")
-	public ModelAndView postShow (@RequestParam("movie") Integer movieId, @RequestParam("theatre") Integer theatreId,
-			@RequestParam("starttime") String starttime, @RequestParam("endtime") String endtime, Model model) {
-		
-		Show show = new Show();
-		
-		show.setMovieId(movieId);
-		show.setTheatreId(theatreId);
-		show.setStart(LocalDateTime.parse(starttime));
-		show.setEnd(LocalDateTime.parse(endtime));
-		
-		
-		if(!isShowOverlapping(show, theatreId)) {
+	@ResponseBody
+	public ResponseEntity<?> postShow (@RequestBody Show show) {
+
+		if(!isShowOverlapping(show, show.getTheatreId())) {
 			showDAO.create(show);
-			return new ModelAndView("redirect:/");
+			return new ResponseEntity<Show>(show,HttpStatus.CREATED);
 		} else {
-			ModelAndView modelNView = new ModelAndView("redirect:/#popup1");
-			modelNView.addObject("success", false);
-			return modelNView;
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}	
 	}
 	

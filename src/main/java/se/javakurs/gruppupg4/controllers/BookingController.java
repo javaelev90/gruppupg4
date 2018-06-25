@@ -6,13 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import se.javakurs.gruppupg4.dao.BookingDAO;
@@ -25,8 +30,9 @@ import se.javakurs.gruppupg4.entities.Movie;
 import se.javakurs.gruppupg4.entities.Show;
 import se.javakurs.gruppupg4.entities.Theatre;
 import se.javakurs.gruppupg4.entities.Ticket;
+import se.javakurs.gruppupg4.entities.wrappers.BookingPageWrapper;
 
-@Controller
+@RestController
 @RequestMapping("/booking")
 public class BookingController {
 	
@@ -42,16 +48,22 @@ public class BookingController {
 	private TicketDAO ticketDAO;
 
 	@GetMapping("/{id}")
-	public String getBookingPage(@PathVariable("id") Integer showId, Model model) {
+	@ResponseBody
+	public ResponseEntity<?> getBookingPage(@PathVariable("id") Integer showId) {
+		
+		BookingPageWrapper bookingPageWrapper = new BookingPageWrapper();
 		
 	    Show show = showDAO.findShow(showId);
-	    model.addAttribute("show", show);
+//	    model.addAttribute("show", show);
+	    bookingPageWrapper.setShow(show);
 	    
 	    Movie movie = movieDAO.findMovie(show.getMovieId());
-	    model.addAttribute("movie", movie);
+//	    model.addAttribute("movie", movie);
+	    bookingPageWrapper.setMovie(movie);
 	    
 		List<Theatre> theatres = theatreDAO.findAllTheatres();
-		model.addAttribute("theatres", theatres);
+//		model.addAttribute("theatres", theatres);
+		bookingPageWrapper.setTheatres(theatres);
 		
 		List<Booking> bookings = bookingDAO.findAllBookings(showId);
 		List<Ticket> ticketsForShow = new ArrayList<>();
@@ -62,13 +74,15 @@ public class BookingController {
 		for(Ticket ticket : ticketsForShow) {
 			ticketMap.put("row"+ticket.getRow()+"col"+ticket.getCol(), ticket);
 		}
-		model.addAttribute("tickets", ticketMap);
+//		model.addAttribute("tickets", ticketMap);
+		bookingPageWrapper.setTicketMap(ticketMap);
 		
-		return "booking";
+		return new ResponseEntity<BookingPageWrapper>(bookingPageWrapper, HttpStatus.OK);
 	}
 	
 	@PostMapping("/{id}")
-	public ModelAndView makeBooking(@PathVariable("id") Integer showId, @RequestParam("seats") List<Integer> seats) {
+	@ResponseBody
+	public ResponseEntity<?> makeBooking(@PathVariable("id") Integer showId, @RequestBody List<Integer> seats) {
 		if(seats.size() > 0) {
 			Booking booking = new Booking();
 			booking.setShowId(showId);
@@ -84,7 +98,7 @@ public class BookingController {
 			}
 		}
 		
-		return new ModelAndView("redirect:/");
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 }

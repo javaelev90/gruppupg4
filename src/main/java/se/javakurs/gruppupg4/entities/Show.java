@@ -4,11 +4,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+
 public class Show {	
 	private int id; 
 	private int movieId;
 	private int theatreId;
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime start;
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime end;
 	
 	public Show() {

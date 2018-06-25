@@ -37,7 +37,7 @@ CREATE TABLE "ticket" (
 "id" serial PRIMARY key,
 "booking_id" int references booking(id),
 "row" int,
-"colum" int
+"col" int
 );
 
 insert into cinematronic.movie(name, description) values ('terminator', 'A seemingly indestructible android is sent from 2029 to 1984 to assassinate a waitress, whose unborn son will lead humanity in a war against the machines, while a soldier from that war is sent to protect her at all costs.');

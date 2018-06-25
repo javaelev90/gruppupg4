@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import se.javakurs.gruppupg4.dao.BookingDAO;
 import se.javakurs.gruppupg4.dao.MovieDAO;
@@ -21,8 +25,9 @@ import se.javakurs.gruppupg4.entities.Booking;
 import se.javakurs.gruppupg4.entities.Movie;
 import se.javakurs.gruppupg4.entities.Show;
 import se.javakurs.gruppupg4.entities.Theatre;
+import se.javakurs.gruppupg4.entities.wrappers.TheatrepageWrapper;
 
-@Controller
+@RestController
 @RequestMapping("/theatre")
 public class TheatreController {
 	
@@ -38,18 +43,22 @@ public class TheatreController {
 	private TicketDAO ticketDAO;
 
 	@GetMapping("/{theatreId}")
-	public String getTheatrePage(@PathVariable("theatreId") Integer theatreId, Model model) {
-
+	@ResponseBody
+	public ResponseEntity<TheatrepageWrapper> getTheatrePage(@PathVariable("theatreId") Integer theatreId) {
+		TheatrepageWrapper theatrepageWrapper = new TheatrepageWrapper();
 		List<Theatre> theatres = theatreDAO.findAllTheatres();
-		model.addAttribute("theatres", theatres);
+//		model.addAttribute("theatres", theatres);
+		theatrepageWrapper.setTheatres(theatres);
 		
 		List<Show> shows = showDAO.findAllShowsForTheatre(theatreId);
-		model.addAttribute("shows", shows);
+//		model.addAttribute("shows", shows);
+		theatrepageWrapper.setShows(shows);
 		
 		List<Movie> movies = movieDAO.findAllMovies();
 		Map<Integer, Movie> movieMap = new HashMap<>();
 		movies.forEach(movie -> movieMap.put(movie.getId(), movie));
-		model.addAttribute("movies", movieMap);
+//		model.addAttribute("movies", movieMap);
+		theatrepageWrapper.setMovieMap(movieMap);
 		
 		List<Integer> totalSeatsTaken = new ArrayList<>();
 		for(Show show : shows) {
@@ -63,8 +72,9 @@ public class TheatreController {
 		}
 		
 
-		model.addAttribute("seatsTaken", totalSeatsTaken);
-		return "index";
+//		model.addAttribute("seatsTaken", totalSeatsTaken);
+		theatrepageWrapper.setTotalSeatsTaken(totalSeatsTaken);
+		return new ResponseEntity<>(theatrepageWrapper, HttpStatus.OK);
 	}
 	
 }
