@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ import se.javakurs.gruppupg4.entities.Ticket;
 import se.javakurs.gruppupg4.entities.wrappers.BookingPageWrapper;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/booking")
 public class BookingController {
 	
@@ -82,19 +84,21 @@ public class BookingController {
 	
 	@PostMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<?> makeBooking(@PathVariable("id") Integer showId, @RequestBody List<Integer> seats) {
+	public ResponseEntity<?> makeBooking(@PathVariable("id") Integer showId, @RequestBody List<List<Integer>> seats) {
+		System.out.println("started booking");
 		if(seats.size() > 0) {
 			Booking booking = new Booking();
 			booking.setShowId(showId);
-			booking.setCustomerId(0);
+			booking.setCustomerId(1);
 			int bookingId = bookingDAO.create(booking);
 			Ticket ticket;
-			for(int i = 0; i< seats.size(); i+=2) {
+			for(int i = 0; i< seats.size(); i++) {
 				ticket = new Ticket();
 				ticket.setBookingId(bookingId);
-				ticket.setRow(seats.get(i));
-				ticket.setCol(seats.get(i+1));
+				ticket.setRow(seats.get(i).get(0));
+				ticket.setCol(seats.get(i).get(1));
 				ticketDAO.create(ticket);
+				System.out.println("created booking");
 			}
 		}
 		
