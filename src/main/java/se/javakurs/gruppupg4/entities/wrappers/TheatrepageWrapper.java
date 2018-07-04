@@ -11,8 +11,8 @@ public class TheatrepageWrapper {
 
 	private List<Theatre> theatres;
 	private List<Show> shows;
-	private Map<Integer, Movie> movieMap;
-	private List<Integer> totalSeatsTaken;
+	private List<Movie> movies;
+	private Map<Integer, Integer> totalSeatsTaken;
 	
 	public List<Theatre> getTheatres() {
 		return theatres;
@@ -26,16 +26,16 @@ public class TheatrepageWrapper {
 	public void setShows(List<Show> shows) {
 		this.shows = shows;
 	}
-	public Map<Integer, Movie> getMovieMap() {
-		return movieMap;
+	public List<Movie> getMovies() {
+		return movies;
 	}
-	public void setMovieMap(Map<Integer, Movie> movieMap) {
-		this.movieMap = movieMap;
+	public void setMovies(List<Movie> movies) {
+		this.movies = movies;
 	}
-	public List<Integer> getTotalSeatsTaken() {
+	public Map<Integer, Integer> getTotalSeatsTaken() {
 		return totalSeatsTaken;
 	}
-	public void setTotalSeatsTaken(List<Integer> totalSeatsTaken) {
+	public void setTotalSeatsTaken(Map<Integer, Integer> totalSeatsTaken) {
 		this.totalSeatsTaken = totalSeatsTaken;
 	}
 	

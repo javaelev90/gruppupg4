@@ -53,6 +53,7 @@ public class HomePageController {
 	@GetMapping("/")
 	@ResponseBody
 	public ResponseEntity<TheatrepageWrapper> getHomePage() {
+
 		TheatrepageWrapper theatrepageWrapper = new TheatrepageWrapper();
 		List<Theatre> theatres = theatreDAO.findAllTheatres();
 //		model.addAttribute("theatres", theatres);
@@ -63,12 +64,13 @@ public class HomePageController {
 		theatrepageWrapper.setShows(shows);
 		
 		List<Movie> movies = movieDAO.findAllMovies();
-		Map<Integer, Movie> movieMap = new HashMap<>();
-		movies.forEach(movie -> movieMap.put(movie.getId(), movie));
+//		Map<Integer, Movie> movieMap = new HashMap<>();
+//		movies.forEach(movie -> movieMap.put(movie.getId(), movie));
 //		model.addAttribute("movies", movieMap);
-		theatrepageWrapper.setMovieMap(movieMap);
+		theatrepageWrapper.setMovies(movies);
 		
-		List<Integer> totalSeatsTaken = new ArrayList<>();
+//		List<Integer> totalSeatsTaken = new ArrayList<>();
+		Map<Integer, Integer> totalSeatsTaken = new HashMap<>();
 		for(Show show : shows) {
 			List<Booking> bookings = new ArrayList<>();
 			bookings.addAll(bookingDAO.findAllBookings(show.getId()));
@@ -76,7 +78,7 @@ public class HomePageController {
 			for(Booking booking : bookings) {
 				seatsTaken += ticketDAO.findAllTickets(booking.getId()).size();
 			}
-			totalSeatsTaken.add(seatsTaken);
+			totalSeatsTaken.put(show.getId(), new Integer(seatsTaken));
 		}
 		
 

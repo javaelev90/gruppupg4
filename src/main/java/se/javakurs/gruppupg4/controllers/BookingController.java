@@ -85,11 +85,10 @@ public class BookingController {
 	@PostMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<?> makeBooking(@PathVariable("id") Integer showId, @RequestBody List<List<Integer>> seats) {
-		System.out.println("started booking");
 		if(seats.size() > 0) {
 			Booking booking = new Booking();
 			booking.setShowId(showId);
-			booking.setCustomerId(1);
+			booking.setCustomerId(0);
 			int bookingId = bookingDAO.create(booking);
 			Ticket ticket;
 			for(int i = 0; i< seats.size(); i++) {
@@ -97,8 +96,6 @@ public class BookingController {
 				ticket.setBookingId(bookingId);
 				ticket.setRow(seats.get(i).get(0));
 				ticket.setCol(seats.get(i).get(1));
-				ticketDAO.create(ticket);
-				System.out.println("created booking");
 			}
 		}
 		
